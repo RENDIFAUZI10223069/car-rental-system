@@ -1,6 +1,6 @@
 # Backend Sistem Manajemen Rental Mobil Terdistribusi
 
-Backend API-only (tanpa frontend) untuk sistem manajemen rental mobil, dibangun untuk
+Backend API-only sistem manajemen rental mobil, dibangun untuk
 mendemonstrasikan konsep **Distributed System** & **Distributed Database**:
 Reverse Proxy + Load Balancing (Nginx), 2 instance Django (horizontal scaling),
 PostgreSQL Primary-Replica (Streaming Replication), Redis Cache, dan JWT Auth.
@@ -10,7 +10,7 @@ PostgreSQL Primary-Replica (Streaming Replication), Redis Cache, dan JWT Auth.
 ```
                          ┌─────────────┐
         Client ───────►  │    Nginx    │  (Reverse Proxy + Load Balancer)
-      (Postman/Swagger)  └──────┬──────┘
+      (Swagger)  └──────┬──────┘
                                  │  round-robin
                     ┌────────────┴────────────┐
               ┌─────▼─────┐             ┌─────▼─────┐
