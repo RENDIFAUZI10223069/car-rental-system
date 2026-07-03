@@ -8,9 +8,9 @@ PostgreSQL Primary-Replica (Streaming Replication), Redis Cache, dan JWT Auth.
 ## Arsitektur
 
 ```
-                         ┌─────────────┐
-        Client ───────►  │    Nginx    │  (Reverse Proxy + Load Balancer)
-      (Swagger)  └──────┬──────┘
+                          ┌─────────────┐
+         Client ───────►  │    Nginx    │  (Reverse Proxy + Load Balancer)
+       (Swagger)          └──────┬──────┘
                                  │  round-robin
                     ┌────────────┴────────────┐
               ┌─────▼─────┐             ┌─────▼─────┐
@@ -18,11 +18,11 @@ PostgreSQL Primary-Replica (Streaming Replication), Redis Cache, dan JWT Auth.
               └─────┬─────┘             └─────┬─────┘
                     │                          │
         ┌───────────┼──────────────────────────┤
-        │            \                        /
+        │            \                         /
    ┌────▼────┐   ┌────▼─────────┐   ┌─────────▼──────┐
-   │  Redis  │   │ PG Primary   │──►│  PG Replica     │
-   │ (cache) │   │ (Read/Write) │   │ (Read Only)     │
-   └─────────┘   └──────────────┘   └─────────────────┘
+   │  Redis  │   │ PG Primary   │──►│  PG Replica    │
+   │ (cache) │   │ (Read/Write) │   │ (Read Only)    │
+   └─────────┘   └──────────────┘   └────────────────┘
                     Streaming Replication (WAL)
 
    pgAdmin -> mengelola & memonitor kedua database (Primary & Replica)
@@ -47,9 +47,9 @@ race-condition akibat replication lag.
 
 ## Stack Teknologi
 
-| Komponen         | Teknologi                          |
+| Komponen          | Teknologi                           |
 |-------------------|-------------------------------------|
-| Backend Framework | Django 4.2 + Django REST Framework |
+| Backend Framework | Django 4.2 + Django REST Framework  |
 | Autentikasi       | JWT (djangorestframework-simplejwt) |
 | Database          | PostgreSQL 15 (Primary + Replica)   |
 | Cache             | Redis 7                             |
@@ -105,15 +105,15 @@ Tunggu hingga semua container `healthy`/`running`. Urutan startup otomatis:
 
 ### 4. Akses layanan
 
-| Layanan                     | URL                                             |
-|------------------------------|--------------------------------------------------|
+| Layanan                      | URL                                             |
+|------------------------------|-------------------------------------------------|
 | API (via Nginx load balancer)| http://localhost:8080/api/v1/                   |
 | Swagger UI                   | http://localhost:8080/swagger/                  |
-| ReDoc                         | http://localhost:8080/redoc/                    |
+| ReDoc                        | http://localhost:8080/redoc/                    |
 | Django Admin                 | http://localhost:8080/admin/                    |
-| pgAdmin                      | http://localhost:5050                            |
-| PostgreSQL Primary (host)    | localhost:5432                                    |
-| PostgreSQL Replica (host)    | localhost:5433                                    |
+| pgAdmin                      | http://localhost:5050                           |
+| PostgreSQL Primary (host)    | localhost:5432                                  |
+| PostgreSQL Replica (host)    | localhost:5433                                  |
 
 Akun Admin default (bisa diubah lewat `.env`):
 ```
@@ -129,19 +129,19 @@ Authorization: Bearer <access_token>
 ```
 
 ### Autentikasi
-| Method | Endpoint                  | Keterangan            |
+| Method | Endpoint                    | Keterangan             |
 |--------|-----------------------------|------------------------|
 | POST   | `/api/v1/auth/login/`       | Login admin → dapat access & refresh token |
 | POST   | `/api/v1/auth/refresh/`     | Refresh access token   |
 
 ### Data Mobil
-| Method | Endpoint                | Keterangan       |
-|--------|---------------------------|-------------------|
-| GET    | `/api/v1/cars/`           | List mobil (cached) |
+| Method | Endpoint                  | Keterangan         |
+|--------|---------------------------|--------------------|
+| GET    | `/api/v1/cars/`           | List mobil (cached)|
 | POST   | `/api/v1/cars/`           | Tambah mobil       |
 | GET    | `/api/v1/cars/{id}/`      | Detail mobil       |
 | PUT/PATCH | `/api/v1/cars/{id}/`   | Update mobil       |
-| DELETE | `/api/v1/cars/{id}/`      | Hapus mobil         |
+| DELETE | `/api/v1/cars/{id}/`      | Hapus mobil        |
 
 ### Data Pelanggan
 Sama polanya di `/api/v1/customers/`
